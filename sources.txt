@@ -1,0 +1,32 @@
+Variables:
+
+
+Time                                                     (user controlled)
+1970-2014 (?)
+
+
+Population           			  (radius of circle)
+ Data for BRICS 1967 - 2015           
+        http://databank.worldbank.org/data/reports.aspx?Code=NY.GDP.MKTP.CD&id=af3ce82b&report_name=Popular_indicators&populartype=series&ispopular=y
+             
+--------------------------------------------------------------------------------------------------------------------------------------------------------------			 
+			 
+GDP - show economic growth  (y axis?)
+        Data for BICS 1967 - 2015 
+        http://databank.worldbank.org/data/reports.aspx?Code=NY.GDP.MKTP.CD&id=af3ce82b&report_name=Popular_indicators&populartype=series&ispopular=y
+            Data for Russian Federation 1989-2015
+			
+        Data for USSR (future Russian Federation) from 1970 to 1990
+        http://stat.kushnir.mk.ua/en/gdp/su.html
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------			 
+
+
+Household Consumption Expenditure (x axis?)
+        Data for BICS 1967 - 2014	
+        http://databank.worldbank.org/data/reports.aspx?Code=NY.GDP.MKTP.CD&id=af3ce82b&report_name=Popular_indicators&populartype=series&ispopular=y
+            Data for Russian Federation 1988-2014
+			
+        Data for USSR 1970-1990	
+		https://knoema.com/UNNAMAD2013/national-accounts-main-aggregates-database-1970-2012?location=1002350-ussr-former
+            Set up variables, time, chart format
