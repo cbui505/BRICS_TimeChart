@@ -1,0 +1,69 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin-left:40px;
+  font-weight: 200;
+  font-size: 14px;
+}
+
+text {
+  cursor: default;
+}
+
+h1 {
+  font-weight: 400;
+}
+
+#chart {
+  height: 506px;
+}
+
+text {
+  font-size: 10px;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.label {
+  fill: #777;
+}
+
+.year.label {
+  font: 500 196px "Helvetica Neue";
+  fill: #ddd;
+}
+
+.country.label  {
+  font: 500 96px "Helvetica Neue";
+  fill: #ddd;
+}
+
+.year.label.active {
+  fill: #aaa;
+}
+
+circle.pointTrajectory {
+   pointer-events: none;
+   stroke: lightgray;
+   fill: black;
+   opacity: 0;
+}
+
+path.lineTrajectory {
+  stroke-width: 2;
+  stroke-opacity: .5;
+  stroke: black;
+  fill: none;
+  pointer-events: none;
+}
+
+.selected {
+  stroke-width: 4;
+}

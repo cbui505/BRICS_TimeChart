@@ -30,3 +30,8 @@ Household Consumption Expenditure (x axis?)
         Data for USSR 1970-1990	
 		https://knoema.com/UNNAMAD2013/national-accounts-main-aggregates-database-1970-2012?location=1002350-ussr-former
             Set up variables, time, chart format
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------			 
+Other Sources
+Used as basis for time chart model
+	https://romsson.github.io/dragit/example/nations.html
