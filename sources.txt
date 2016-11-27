@@ -18,6 +18,9 @@ GDP - show economic growth  (y axis?)
 			
         Data for USSR (future Russian Federation) from 1970 to 1990
         http://stat.kushnir.mk.ua/en/gdp/su.html
+	
+	Long term forcast data for BRICS and other nations:
+	https://data.oecd.org/gdp/gdp-long-term-forecast.htm
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------			 
 
