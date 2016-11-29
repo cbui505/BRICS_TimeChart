@@ -21,6 +21,7 @@ var xScale = d3.scale.linear().domain([0.25, 1.1]).range([0, width]),
 // The x & y axes.
 var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(0).ticks(0);
+
 // Create the SVG container and set the origin.
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -28,6 +29,12 @@ var svg = d3.select("#chart").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .attr("class", "gRoot")
+
+var tooltip = d3.select("body")      //will be adding to 'body'
+                          .append("div")	  //for formatting
+                          .attr("id", "tooltip")  //for styling
+                          .classed("hidden", "true");  //make hidden first
+
 // Add the x-axis.
 svg.append("g")
     .attr("class", "x axis")
@@ -80,29 +87,55 @@ d3.csv("BRICS_Household.csv", function(nations) {
       .attr("class", "dot")
       .style("fill", function(d) { return colorScale(color(d)); })
       .call(position)
-  // Add a title.
-  dot.append("title")
-      .text(function(d) { return d.name; });
+  // Add a title and make it display country name on hover.
+ /* dot.append("title")
+      .text(function(d) { return d.name; }); */
   // Start a transition that interpolates the data based on year.
   svg.transition()
       .duration(30000)
       .ease("linear")
   // Positions the dots based on data.
+  
+  svg.selectAll("circle")
+            //when the user hovers over a circle
+            .on("mouseover", function(d){
+                //getting position for where to place the tooltip
+                //shift tooltip bottom right a bit for appearance
+                console.log(d.name);
+                var xPosition = parseFloat(d3.select(this).attr("cx")) + 120;
+				var yPosition = parseFloat(d3.select(this).attr("cy")) + 100;
+
+            
+                //adding the text for the tooltip
+                //using html lets us add line breaks (new line char)
+                tooltip.html("Country: "+ d.name + "<br>" + 
+                             "HDI: " + d.hdi + "<br>" +
+                            "GDP: $" + (d.gdp/1000000000) + " Billion <br>" +
+                            "Total Population: " + (d.population/1000000) + " Million")
+                       //.transition()
+                       //.duration(1000)
+                       //position the tooltip using specified values
+                       .style("left", xPosition + "px")		
+                       .style("top", yPosition + "px");
+                
+                //select tooltip and make it visible
+                d3.select("#tooltip").classed("hidden", false);
+            })
+        
+            //when the user moves mouse off circle
+            .on("mouseout", function(d) {
+                //make the tooltip not visible
+                d3.select("#tooltip").classed("hidden", true);	
+            }); 
+  
+  
   function position(dot) {
     dot.attr("cx", function(d) { 
         return xScale(x(d)); })
        .attr("cy", function(d) { return yScale(y(d)); })
        .attr("r", function(d) { return radiusScale(radius(d)); });
   }
-  // Defines a sort order so that the smallest dots are drawn on top.
-  function order(a, b) {
-    return radius(b) - radius(a);
-  }
-  // Updates the display to show the specified year.
-  function displayYear(year) {
-    dot.data(interpolateData(year+dragit.time.min), key).call(position).sort(order);
-    label.text(dragit.time.min + Math.round(year));
-  }
+  
   // Interpolates the dataset for the given (fractional) year.
   function interpolateData(year) {
     return nations.map(function(d) {
