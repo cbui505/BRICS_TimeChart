@@ -1,16 +1,17 @@
 // Various accessors that specify the four dimensions of data to visualize.
-function x(d) { return d.income; }
-function y(d) { return d.lifeExpectancy; }
+function x(d) { return d.hdi; }
+function y(d) { return d.gdp; }
 function radius(d) { return d.population; }
-function color(d) { return d.region; }
+function color(d) { return d.name; }
 function key(d) { return d.name; }
+var BRICS = ["Brazil", "Russian Federation", "India", "China", "South Africa"];
 // Chart dimensions.
 var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
     width = 960 - margin.right,
     height = 500 - margin.top - margin.bottom;
 // Various scales. These domains make assumptions of data, naturally.
-var xScale = d3.scale.log().domain([300, 1e5]).range([0, width]),
-    yScale = d3.scale.linear().domain([10, 85]).range([height, 0]),
+var xScale = d3.scale.linear().domain([0, 1]).range([0, width]),
+    yScale = d3.scale.log().domain([1e9, 5e13]).range([height, 0]),
     radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
     colorScale = d3.scale.category10();
 // The x & y axes.
@@ -63,14 +64,14 @@ var countrylabel = svg.append("text")
     .text(" ");
 var first_time = true;
 // Load the data.
-d3.json("nations.json", function(nations) {
+d3.csv("BRICS_Household.csv", function(nations) {
   // A bisector since many nation's data is sparsely-defined.
   var bisect = d3.bisector(function(d) { return d[0]; });
   // Add a dot per nation. Initialize the data at 1800, and set the colors.
   var dot = svg.append("g")
       .attr("class", "dots")
     .selectAll(".dot")
-      .data(interpolateData(1800))
+      .data(interpolateData(1970))
     .enter().append("circle")
       .attr("class", "dot")
       .style("fill", function(d) { return colorScale(color(d)); })
@@ -84,7 +85,8 @@ d3.json("nations.json", function(nations) {
       .ease("linear")
   // Positions the dots based on data.
   function position(dot) {
-    dot.attr("cx", function(d) { return xScale(x(d)); })
+    dot.attr("cx", function(d) { 
+        return xScale(x(d)); })
        .attr("cy", function(d) { return yScale(y(d)); })
        .attr("r", function(d) { return radiusScale(radius(d)); });
   }
@@ -101,11 +103,10 @@ d3.json("nations.json", function(nations) {
   function interpolateData(year) {
     return nations.map(function(d) {
       return {
-        name: d.name,
-        region: d.region,
-        income: interpolateValues(d.income, year),
-        population: interpolateValues(d.population, year),
-        lifeExpectancy: interpolateValues(d.lifeExpectancy, year)
+        name: d.Country,
+        hdi: getHDI(year, d.Country),
+        gdp: getGDP(year, d.Country),
+        population: getPopulation(year, d.Country)
       };
     });
   }
@@ -121,6 +122,39 @@ d3.json("nations.json", function(nations) {
     return a[1];
   }
   
+  function getHDI(year, country){
+      var index = 0;
+      for(var i=0; i<5; i++){
+          if(country === BRICS[i]){
+              index = i;
+          }
+      }
+      console.log(country + " " + nations[index][year]);
+      return +nations[index][year];
+  }
+    
+  function getGDP(year, country){
+      var index = 0;
+      for(var i=0; i<5; i++){
+          if(country === BRICS[i]){
+              index = i;
+          }
+      }
+      index+=5;
+      return +nations[index][year];
+  }        
+
+  function getPopulation(year, country){
+      var index = 0;
+      for(var i=0; i<5; i++){
+          if(country === BRICS[i]){
+              index = i;
+          }
+      }
+      index+=10;
+      return +nations[index][year];
+  }        
+    /*
   init();
   function update(v, duration) {
     dragit.time.current = v || dragit.time.current;
@@ -149,5 +183,6 @@ d3.json("nations.json", function(nations) {
     }
     dragit.evt.register("dragend", end_effect)
   };
+    */
 
 });
