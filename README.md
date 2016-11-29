@@ -1,4 +1,7 @@
 # BRICS_TimeChart
+
+https://cbui505.github.io/BRICS_TimeChart/
+
 A timechart mapping the GDP, household consumption expenditure, and population of BRICS
 
 GDP mapped to x axis 
