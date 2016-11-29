@@ -4,19 +4,23 @@ function y(d) { return d.gdp; }
 function radius(d) { return d.population; }
 function color(d) { return d.name; }
 function key(d) { return d.name; }
+//var year = 0;
+function updateData(year){
+      getData(year);
+  }
 var BRICS = ["Brazil", "Russian Federation", "India", "China", "South Africa"];
 // Chart dimensions.
 var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
     width = 960 - margin.right,
     height = 500 - margin.top - margin.bottom;
 // Various scales. These domains make assumptions of data, naturally.
-var xScale = d3.scale.linear().domain([0, 1]).range([0, width]),
-    yScale = d3.scale.log().domain([1e9, 5e13]).range([height, 0]),
+var xScale = d3.scale.linear().domain([0.25, 1.1]).range([0, width]),
+    yScale = d3.scale.log().domain([1e10, 5e14]).range([height, 0]),
     radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
     colorScale = d3.scale.category10();
 // The x & y axes.
 var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
-    yAxis = d3.svg.axis().scale(yScale).orient("left");
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(0).ticks(0);
 // Create the SVG container and set the origin.
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -39,7 +43,7 @@ svg.append("text")
     .attr("text-anchor", "end")
     .attr("x", width)
     .attr("y", height - 6)
-    .text("income per capita, inflation-adjusted (dollars)");
+    .text("Human Development Index (HDI)");
 // Add a y-axis label.
 svg.append("text")
     .attr("class", "y label")
@@ -47,14 +51,14 @@ svg.append("text")
     .attr("y", 6)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
-    .text("life expectancy (years)");
+    .text("Gross Domestic Product (GDP in USD)");
 // Add the year label; the value is set on transition.
 var label = svg.append("text")
     .attr("class", "year label")
     .attr("text-anchor", "end")
     .attr("y", height - 24)
     .attr("x", width)
-    .text(1800);
+    .text(1970);
 // Add the country label; the value is set on transition.
 var countrylabel = svg.append("text")
     .attr("class", "country label")
@@ -62,7 +66,7 @@ var countrylabel = svg.append("text")
     .attr("y", 80)
     .attr("x", 20)
     .text(" ");
-var first_time = true;
+
 // Load the data.
 d3.csv("BRICS_Household.csv", function(nations) {
   // A bisector since many nation's data is sparsely-defined.
@@ -153,36 +157,12 @@ d3.csv("BRICS_Household.csv", function(nations) {
       }
       index+=10;
       return +nations[index][year];
-  }        
-    /*
-  init();
-  function update(v, duration) {
-    dragit.time.current = v || dragit.time.current;
-    displayYear(dragit.time.current)
-    d3.select("#slider-time").property("value", dragit.time.current);
+  }  
+  getData = function(year){
+      console.log(year);
+      dot.data(interpolateData(year))
+           .call(position);
+      label.text(year);
   }
-  function init() {
-    dragit.init(".gRoot");
-    dragit.time = {min:1800, max:2009, step:1, current:1800}
-    dragit.data = d3.range(nations.length).map(function() { return Array(); })
-    for(var yy = 1800; yy<2009; yy++) {
-      interpolateData(yy).filter(function(d, i) { 
-        dragit.data[i][yy-dragit.time.min] = [xScale(x(d)), yScale(y(d))];
-      })
-    }
-    dragit.evt.register("update", update);
-    //d3.select("#slider-time").property("value", dragit.time.current);
-    d3.select("#slider-time")
-      .on("mousemove", function() { 
-        update(parseInt(this.value), 0);
-        //clear_demo();
-      })
-    var end_effect = function() {
-      countrylabel.text("");
-      dot.style("opacity", 1)
-    }
-    dragit.evt.register("dragend", end_effect)
-  };
-    */
 
 });
