@@ -1,6 +1,6 @@
 // Various accessors that specify the four dimensions of data to visualize.
-function x(d) { return d.hdi; }
-function y(d) { return d.gdp; }
+function y(d) { return d.hdi; }
+function x(d) { return d.gdp; }
 function radius(d) { return d.population; }
 function color(d) { return d.name; }
 function key(d) { return d.name; }
@@ -14,13 +14,13 @@ var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
     width = 960 - margin.right,
     height = 500 - margin.top - margin.bottom;
 // Various scales. These domains make assumptions of data, naturally.
-var xScale = d3.scale.linear().domain([0.25, 1.1]).range([0, width]),
-    yScale = d3.scale.log().domain([1e10, 5e14]).range([height, 0]),
+var xScale = d3.scale.log().domain([1.5e10, 1e14]).range([0, width]),
+    yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]),
     radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
     colorScale = d3.scale.category10();
 // The x & y axes.
-var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(12, d3.format(",d")),
-    yAxis = d3.svg.axis().scale(yScale).orient("left").tickSize(0).ticks(0);
+var xAxis = d3.svg.axis().orient("bottom").scale(xScale).tickSize(0).ticks(0),
+    yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(12, d3.format(",d"));
 
 // Create the SVG container and set the origin.
 var svg = d3.select("#chart").append("svg")
@@ -31,9 +31,9 @@ var svg = d3.select("#chart").append("svg")
     .attr("class", "gRoot")
 
 var tooltip = d3.select("body")      //will be adding to 'body'
-                          .append("div")	  //for formatting
-                          .attr("id", "tooltip")  //for styling
-                          .classed("hidden", "true");  //make hidden first
+            .append("div")	  //for formatting
+            .attr("id", "tooltip")  //for styling
+            .classed("hidden", "true");  //make hidden first
 
 // Add the x-axis.
 svg.append("g")
@@ -50,7 +50,7 @@ svg.append("text")
     .attr("text-anchor", "end")
     .attr("x", width)
     .attr("y", height - 6)
-    .text("Human Development Index (HDI)");
+    .text("Gross Domestic Product (GDP in USD)");
 // Add a y-axis label.
 svg.append("text")
     .attr("class", "y label")
@@ -58,7 +58,7 @@ svg.append("text")
     .attr("y", 6)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
-    .text("Gross Domestic Product (GDP in USD)");
+    .text("Human Development Index (HDI)");
 // Add the year label; the value is set on transition.
 var label = svg.append("text")
     .attr("class", "year label")
@@ -66,13 +66,13 @@ var label = svg.append("text")
     .attr("y", height - 24)
     .attr("x", width)
     .text(1970);
-// Add the country label; the value is set on transition.
+/* Add the country label; the value is set on transition.
 var countrylabel = svg.append("text")
     .attr("class", "country label")
     .attr("text-anchor", "start")
     .attr("y", 80)
     .attr("x", 20)
-    .text(" ");
+    .text(" "); */
 
 // Load the data.
 d3.csv("BRICS_Household.csv", function(nations) {
@@ -90,6 +90,20 @@ d3.csv("BRICS_Household.csv", function(nations) {
   // Add a title and make it display country name on hover.
  /* dot.append("title")
       .text(function(d) { return d.name; }); */
+  
+   svg.selectAll(".text")    //select all nonexistent class text
+        .data(interpolateData(1970))               //bind data
+        .enter().append("text")   //add placeholders and append text there
+        .attr("class","text")     //give class of text for styling/access
+        .style("text-anchor", "middle")  //print so middle is placed at point
+        //place at values below (center of circles)
+        .attr("x", function(d) {return xScale(d.gdp);})
+        .attr("y", function(d) {return yScale(d.hdi)+(0.7 * radiusScale(radius(d)) );})
+        //print black
+        .style("fill", "black")
+        //add country's name as text for each one
+        .text(function (d) {return d.name; });
+
   // Start a transition that interpolates the data based on year.
   svg.transition()
       .duration(30000)
@@ -101,7 +115,6 @@ d3.csv("BRICS_Household.csv", function(nations) {
             .on("mouseover", function(d){
                 //getting position for where to place the tooltip
                 //shift tooltip bottom right a bit for appearance
-                console.log(d.name);
                 var xPosition = parseFloat(d3.select(this).attr("cx")) + 120;
 				var yPosition = parseFloat(d3.select(this).attr("cy")) + 100;
 
@@ -109,8 +122,8 @@ d3.csv("BRICS_Household.csv", function(nations) {
                 //adding the text for the tooltip
                 //using html lets us add line breaks (new line char)
                 tooltip.html("Country: "+ d.name + "<br>" + 
-                             "HDI: " + d.hdi + "<br>" +
                             "GDP: $" + (d.gdp/1000000000) + " Billion <br>" +
+                             "HDI: " + d.hdi + "<br>" +
                             "Total Population: " + (d.population/1000000) + " Million")
                        //.transition()
                        //.duration(1000)
@@ -128,12 +141,29 @@ d3.csv("BRICS_Household.csv", function(nations) {
                 d3.select("#tooltip").classed("hidden", true);	
             }); 
   
-  
+  //update position/size of circles and position of country labels
   function position(dot) {
-    dot.attr("cx", function(d) { 
+    /* temporary storage for x and y positions */
+    var tempX = [1,2,3,4,5];
+    var tempY = [1,2,3,4,5];
+      
+    //update circles
+    dot.attr("cx", function(d, i) { 
+        //store x position of circle for label
+        tempX[i] = xScale(x(d));
+        //get x position
         return xScale(x(d)); })
-       .attr("cy", function(d) { return yScale(y(d)); })
+       .attr("cy", function(d, i) {
+        //store y position of circle for label
+        tempY[i] = yScale(d.hdi)+(0.7 * radiusScale(radius(d)));
+        //get y position
+        return yScale(y(d)); })
        .attr("r", function(d) { return radiusScale(radius(d)); });
+      
+    //update position of text using stored x and y values
+    svg.selectAll(".text")
+       .attr("x", function(d, i) { return tempX[i]; })
+       .attr("y", function(d, i) { return tempY[i]; });
   }
   
   // Interpolates the dataset for the given (fractional) year.
@@ -166,7 +196,6 @@ d3.csv("BRICS_Household.csv", function(nations) {
               index = i;
           }
       }
-      console.log(country + " " + nations[index][year]);
       return +nations[index][year];
   }
     
@@ -192,7 +221,6 @@ d3.csv("BRICS_Household.csv", function(nations) {
       return +nations[index][year];
   }  
   getData = function(year){
-      console.log(year);
       dot.data(interpolateData(year))
            .call(position);
       label.text(year);
