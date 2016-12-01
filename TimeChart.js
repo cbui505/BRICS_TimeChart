@@ -110,6 +110,8 @@ d3.csv("BRICS_Household.csv", function(nations) {
       .ease("linear")
   // Positions the dots based on data.
   
+  var commaFormat = d3.format(',');
+  
   svg.selectAll("circle")
             //when the user hovers over a circle
             .on("mouseover", function(d){
@@ -122,9 +124,9 @@ d3.csv("BRICS_Household.csv", function(nations) {
                 //adding the text for the tooltip
                 //using html lets us add line breaks (new line char)
                 tooltip.html("Country: "+ d.name + "<br>" + 
-                            "GDP: $" + (d.gdp/1000000000) + " Billion <br>" +
+                            "GDP: $" + commaFormat(d.gdp/1000000000) + " Billion <br>" +
                              "HDI: " + d.hdi + "<br>" +
-                            "Total Population: " + (d.population/1000000) + " Million")
+                            "Total Population: " + commaFormat(d.population/1000000) + " Million")
                        //.transition()
                        //.duration(1000)
                        //position the tooltip using specified values
