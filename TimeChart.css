@@ -40,6 +40,7 @@ th, td{
 
 .dot {
   stroke: #000;
+  stroke-opacity: 0.33;
 }
 
 .axis path, .axis line {

@@ -9,9 +9,10 @@ function updateData(year){
       getData(year);
   }
 var BRICS = ["Brazil", "Russian Federation", "India", "China", "South Africa"];
+
 // Chart dimensions.
-var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
-    width = 960 - margin.right,
+var margin = {top: 19.5, right: 120.5, bottom: 19.5, left: 39.5},
+    width = 1080 - margin.right,
     height = 500 - margin.top - margin.bottom;
 // Various scales. These domains make assumptions of data, naturally.
 var xScale = d3.scale.log().domain([1.5e10, 1e14]).range([0, width]),
@@ -85,8 +86,39 @@ d3.csv("BRICS_Household.csv", function(nations) {
       .data(interpolateData(1970))
     .enter().append("circle")
       .attr("class", "dot")
+      .attr("data-legend",function(d) { return d.name})
       .style("fill", function(d) { return colorScale(color(d)); })
-      .call(position)
+      .call(position);
+  
+  
+            var legendRectSize = 18;                                  // NEW
+        var legendSpacing = 10;                                    // NEW
+
+        var legend = svg.selectAll('.legend')                     // NEW
+          .data(interpolateData(1970))                                   // NEW
+          .enter()                                                // NEW
+          .append('g')                                            // NEW
+          .attr('class', 'legend')                                // NEW
+          .attr('transform', function(d, i) {                     // NEW
+            var height = legendRectSize + legendSpacing;          // NEW
+            var offset =  height * BRICS.length / 2 ;      // NEW
+            var horz = -2 * legendRectSize + 1000;                       // NEW
+            var vert = i * height - offset - 360;                       // NEW
+            return 'translate(' + horz + ',' + vert + ')';        // NEW
+          });                                                     // NEW
+
+        legend.append('rect')                                     // NEW
+          .attr('width', legendRectSize)                          // NEW
+          .attr('height', legendRectSize)                         // NEW
+          .style('fill', function(d) { return colorScale(color(d)); });                                   // NEW
+          //.style('stroke', function(d) { return colorScale(color(d)); });                                // NEW
+          
+        legend.append('text')                                     // NEW
+          .attr('x', legendRectSize + legendSpacing)              // NEW
+          .attr('y', legendRectSize - legendSpacing)              // NEW
+          .text(function(d) { return d.name; });                       // NEW
+  
+  
   // Add a title and make it display country name on hover.
  /* dot.append("title")
       .text(function(d) { return d.name; }); */
@@ -103,6 +135,7 @@ d3.csv("BRICS_Household.csv", function(nations) {
         .style("fill", "black")
         //add country's name as text for each one
         .text(function (d) {return d.name; });
+  
 
   // Start a transition that interpolates the data based on year.
   svg.transition()
@@ -142,7 +175,8 @@ d3.csv("BRICS_Household.csv", function(nations) {
                 //make the tooltip not visible
                 d3.select("#tooltip").classed("hidden", true);	
             }); 
-  
+
+
   //update position/size of circles and position of country labels
   function position(dot) {
     /* temporary storage for x and y positions */
