@@ -91,32 +91,31 @@ d3.csv("BRICS_Household.csv", function(nations) {
       .call(position);
   
   
-            var legendRectSize = 18;                                  // NEW
-        var legendSpacing = 10;                                    // NEW
+        var legendRectSize = 18; // Size of legend rectangles
+        var legendSpacing = 10;  // Spacing between legend spaces
 
-        var legend = svg.selectAll('.legend')                     // NEW
-          .data(interpolateData(1970))                                   // NEW
-          .enter()                                                // NEW
-          .append('g')                                            // NEW
-          .attr('class', 'legend')                                // NEW
-          .attr('transform', function(d, i) {                     // NEW
-            var height = legendRectSize + legendSpacing;          // NEW
-            var offset =  height * BRICS.length / 2 ;      // NEW
-            var horz = -2 * legendRectSize + 1000;                       // NEW
-            var vert = i * height - offset - 360;                       // NEW
-            return 'translate(' + horz + ',' + vert + ')';        // NEW
-          });                                                     // NEW
+        var legend = svg.selectAll('.legend') // Select legend property (none yet)
+          .data(interpolateData(1970))  // Grab data
+          .enter()    // enter into data
+          .append('g')    // append onto g element
+          .attr('class', 'legend')     // call the class legend
+          .attr('transform', function(d, i) {    // placement of the legend
+            var height = legendRectSize + legendSpacing;  // height = rectangle size + spaces
+            var offset =  height * BRICS.length / 2 ;  // offset by the #of countries * height /2 (arbitrary)
+            var horz = -2 * legendRectSize + 1000; // x coordinate (arbitrary)
+            var vert = i * height - offset - 360;  // y coordinate (arbitrary)
+            return 'translate(' + horz + ',' + vert + ')'; // translates legend to location
+          });                                                     
 
-        legend.append('rect')                                     // NEW
-          .attr('width', legendRectSize)                          // NEW
-          .attr('height', legendRectSize)                         // NEW
-          .style('fill', function(d) { return colorScale(color(d)); });                                   // NEW
-          //.style('stroke', function(d) { return colorScale(color(d)); });                                // NEW
+        legend.append('rect') // Add colored recntangles 
+          .attr('width', legendRectSize) // width of rectangle = size
+          .attr('height', legendRectSize) // height of rectangle = size 
+          .style('fill', function(d) { return colorScale(color(d)); }); // Set color of rectangle
           
-        legend.append('text')                                     // NEW
-          .attr('x', legendRectSize + legendSpacing)              // NEW
-          .attr('y', legendRectSize - legendSpacing)              // NEW
-          .text(function(d) { return d.name; });                       // NEW
+        legend.append('text')   // add the text to the legend
+          .attr('x', legendRectSize + legendSpacing)  // x coor of text is rectSize + spacing (aligned next to square)
+          .attr('y', legendRectSize - legendSpacing)  // y coor of text is rectSize - spacing (aligned at same height)
+          .text(function(d) { return d.name; });      // text is the name of the country 
   
   
   // Add a title and make it display country name on hover.
@@ -204,12 +203,13 @@ d3.csv("BRICS_Household.csv", function(nations) {
   
   // Interpolates the dataset for the given (fractional) year.
   function interpolateData(year) {
-    return nations.map(function(d) {
+    return nations.map(function(d) { // maps data ot the nations
       return {
-        name: d.Country,
-        hdi: getHDI(year, d.Country),
-        gdp: getGDP(year, d.Country),
-        population: getPopulation(year, d.Country)
+        name: d.Country, // country name = d.Coutnry
+        hdi: getHDI(year, d.Country), // call getHDI to get the HDI for this year and country
+        gdp: getGDP(year, d.Country), // call getGDP to get the GDP for this year and country
+        // call getPopulation to get the population for this year and country
+        population: getPopulation(year, d.Country) 
       };
     });
   }
@@ -224,42 +224,43 @@ d3.csv("BRICS_Household.csv", function(nations) {
     }
     return a[1];
   }
-  
+  // retrieves HDI for a country and a year
   function getHDI(year, country){
-      var index = 0;
+      var index = 0; // initialize index
       for(var i=0; i<5; i++){
-          if(country === BRICS[i]){
-              index = i;
+          if(country === BRICS[i]){ // Check which index the country responds to
+              index = i; // set the index
           }
       }
-      return +nations[index][year];
+      return +nations[index][year]; // return the HDI for the country and year
   }
-    
+  // retrieves GDP for a country and year
   function getGDP(year, country){
-      var index = 0;
-      for(var i=0; i<5; i++){
-          if(country === BRICS[i]){
-              index = i;
+      var index = 0; // initialize index
+      for(var i=0; i<5; i++){ 
+          if(country === BRICS[i]){ // Check which index the country responds to
+              index = i; // set the index
           }
       }
-      index+=5;
-      return +nations[index][year];
+      index+=5; // add 5 since GDP is in the range [5, 9]
+      return +nations[index][year]; // return the population for the country and year
   }        
-
+  // retrieves population for a country and year
   function getPopulation(year, country){
-      var index = 0;
+      var index = 0; // initialize index
       for(var i=0; i<5; i++){
-          if(country === BRICS[i]){
-              index = i;
+          if(country === BRICS[i]){ // Check which index the country responds to
+              index = i; // set the index
           }
       }
-      index+=10;
-      return +nations[index][year];
+      index+=10; // add 10 since GDP is in the range [10, 14]
+      return +nations[index][year]; // return the population for the country and year
   }  
-  getData = function(year){
-      dot.data(interpolateData(year))
-           .call(position);
-      label.text(year);
+  // Helper function to redraw circles for a given year
+  getData = function(year){ 
+      dot.data(interpolateData(year)) // send in the correct year data to the dot svg
+           .call(position); // call position function to calculate new positions
+      label.text(year); // change label text to current year
   }
 
 });
