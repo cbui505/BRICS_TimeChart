@@ -19,9 +19,14 @@ var xScale = d3.scale.log().domain([1.5e10, 1e14]).range([0, width]),
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]),
     radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
     colorScale = d3.scale.category10();
+
+//format number to display commas
+var commaFormat = d3.format(',');
+
 // The x & y axes.
-var xAxis = d3.svg.axis().orient("bottom").scale(xScale).tickSize(0).ticks(0),
-    yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(12, d3.format(",d"));
+var xAxis = d3.svg.axis().orient("bottom").scale(xScale).tickSize(0).ticks(0)
+                         .tickValues([1e11, 1e12,1e13,1e14]).tickFormat(function(d){return commaFormat(d/1000000000)}),
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
 
 // Create the SVG container and set the origin.
 var svg = d3.select("#chart").append("svg")
@@ -51,7 +56,7 @@ svg.append("text")
     .attr("text-anchor", "end")
     .attr("x", width)
     .attr("y", height - 6)
-    .text("Gross Domestic Product (GDP in USD)");
+    .text("Gross Domestic Product (Billions of $USD)");
 // Add a y-axis label.
 svg.append("text")
     .attr("class", "y label")
@@ -141,8 +146,6 @@ d3.csv("BRICS_Household.csv", function(nations) {
       .duration(30000)
       .ease("linear")
   // Positions the dots based on data.
-  
-  var commaFormat = d3.format(',');
   
   svg.selectAll("circle")
             //when the user hovers over a circle
