@@ -156,9 +156,9 @@ d3.csv("BRICS_Household.csv", function(nations) {
                 //adding the text for the tooltip
                 //using html lets us add line breaks (new line char)
                 tooltip.html("<center>"+ d.name + "</center>" + 
-                            "GDP: " + "<span style='float:right;'>" + "$" + commaFormat(d.gdp/1000000000) + " Billion </span> <br>" +
-                            "HDI: " + "<span style='float:right;'>" + d.hdi + "</span> <br>" +
-                            "Total Population: " + "<span style='float:right;'>" + commaFormat(d.population/1000000) + " Million </span>")
+                            "GDP " + "<span style='float:right;'>" + "$" + commaFormat(d.gdp/1000000000) + " Billion </span> <br>" +
+                            "HDI " + "<span style='float:right;'>" + d.hdi + "</span> <br>" +
+                            "Total Population " + "<span style='float:right;'>" + commaFormat(d.population/1000000) + " Million </span>")
                        //.transition()
                        //.duration(1000)
                        //position the tooltip using specified values
