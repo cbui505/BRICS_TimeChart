@@ -18,7 +18,9 @@ var margin = {top: 19.5, right: 120.5, bottom: 19.5, left: 39.5},
 var xScale = d3.scale.log().domain([1.5e10, 1e14]).range([0, width]),
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]),
     radiusScale = d3.scale.sqrt().domain([0, 5e8]).range([0, 40]),
-    colorScale = d3.scale.category10();
+    colorScale = d3.scale.ordinal()
+    .domain(BRICS)
+    .range(["#98FB98", "#CD5C5C", "#FFB732", "#C0C0C0", "#BDB76B"]);
 
 //format number to display commas
 var commaFormat = d3.format(',');
@@ -92,7 +94,9 @@ d3.csv("BRICS_Household.csv", function(nations) {
     .enter().append("circle")
       .attr("class", "dot")
       .attr("data-legend",function(d) { return d.name})
-      .style("fill", function(d) { return colorScale(color(d)); })
+      .style("fill", function(d) { 
+          console.log(colorScale(color(d)));
+          return colorScale(color(d)); })
       .call(position);
   
   
@@ -115,7 +119,8 @@ d3.csv("BRICS_Household.csv", function(nations) {
         legend.append('rect') // Add colored recntangles 
           .attr('width', legendRectSize) // width of rectangle = size
           .attr('height', legendRectSize) // height of rectangle = size 
-          .style('fill', function(d) { return colorScale(color(d)); }); // Set color of rectangle
+          .style('fill', function(d) { 
+            return colorScale(color(d)); }); // Set color of rectangle
           
         legend.append('text')   // add the text to the legend
           .attr('x', legendRectSize + legendSpacing)  // x coor of text is rectSize + spacing (aligned next to square)

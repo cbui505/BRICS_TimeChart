@@ -202,6 +202,13 @@ input[type=range]:focus::-ms-fill-upper {
     left: 550px;
     /*
     bottom: 18px;
-    */
+    
     opacity: 0.8;
+    */
+}
+
+#projectedLabel{
+    position: relative;
+    left: 700px;
+    bottom: 13px;
 }
