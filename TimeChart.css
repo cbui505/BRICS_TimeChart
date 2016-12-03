@@ -193,3 +193,15 @@ input[type=range]:focus::-ms-fill-lower {
 input[type=range]:focus::-ms-fill-upper {
   background: #C2BFB6;
 }
+
+#projected{
+    background-color: #b6fbff;
+    height: 8px;
+    position: relative;
+    width: 385px;
+    left: 550px;
+    /*
+    bottom: 18px;
+    */
+    opacity: 0.8;
+}
