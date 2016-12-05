@@ -112,7 +112,7 @@ d3.csv("BRICS_Household.csv", function(nations) {
             var height = legendRectSize + legendSpacing;  // height = rectangle size + spaces
             var offset =  height * BRICS.length / 2 ;  // offset by the #of countries * height /2 (arbitrary)
             var horz = -2 * legendRectSize + 1000; // x coordinate (arbitrary)
-            var vert = i * height - offset - 360;  // y coordinate (arbitrary)
+            var vert = i * height - offset - 500;  // y coordinate (arbitrary)
             return 'translate(' + horz + ',' + vert + ')'; // translates legend to location
           });                                                     
 
