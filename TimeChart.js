@@ -83,7 +83,7 @@ function drawEdu(){
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
     //reload data and redraw graph
-    loadData("BRICS_Edu.csv", "Rate of Education", "Education");
+    loadData("BRICS_EDU.csv", "Rate of Education", "Education");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
