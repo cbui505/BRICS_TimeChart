@@ -42,38 +42,8 @@ var tooltip = d3.select("body")      //will be adding to 'body'
             .append("div")	  //for formatting
             .attr("id", "tooltip")  //for styling
             .classed("hidden", "true");  //make hidden first
+drawHDI();
 
-// Add the x-axis.
-svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
-// Add the y-axis.
-svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
-// Add an x-axis label.
-svg.append("text")
-    .attr("class", "x label")
-    .attr("text-anchor", "end")
-    .attr("x", width)
-    .attr("y", height - 6)
-    .text("Gross Domestic Product (Billions of $USD)");
-// Add a y-axis label.
-svg.append("text")
-    .attr("class", "y label")
-    .attr("text-anchor", "end")
-    .attr("y", 6)
-    .attr("dy", ".75em")
-    .attr("transform", "rotate(-90)")
-    .text("Human Development Index (HDI)");
-// Add the year label; the value is set on transition.
-var label = svg.append("text")
-    .attr("class", "year label")
-    .attr("text-anchor", "end")
-    .attr("y", height - 24)
-    .attr("x", width)
-    .text(1970);
 /* Add the country label; the value is set on transition.
 var countrylabel = svg.append("text")
     .attr("class", "country label")
@@ -82,8 +52,32 @@ var countrylabel = svg.append("text")
     .attr("x", 20)
     .text(" "); */
 
+function clearCanvas(){
+    console.log("I am awesome");
+    svg.selectAll("*").remove();
+}
+
+function drawHDI(){
+    svg.selectAll("*").remove();
+    loadData("BRICS_Household.csv");
+    document.getElementById("slider-time").value = "1970";
+}
+
+function drawLE(){
+    alert("currently in progress");
+}
+
+function drawEdu(){
+    alert("Working on this");
+}
+
+function drawGNI(){
+    alert("Almost done!");
+}
+
+function loadData(file){
 // Load the data.
-d3.csv("BRICS_Household.csv", function(nations) {
+d3.csv(file, function(nations) {
   // A bisector since many nation's data is sparsely-defined.
   var bisect = d3.bisector(function(d) { return d[0]; });
   // Add a dot per nation. Initialize the data at 1800, and set the colors.
@@ -95,37 +89,67 @@ d3.csv("BRICS_Household.csv", function(nations) {
       .attr("class", "dot")
       .attr("data-legend",function(d) { return d.name})
       .style("fill", function(d) { 
-          console.log(colorScale(color(d)));
           return colorScale(color(d)); })
       .call(position);
   
+  // Add the x-axis.
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+  // Add the y-axis.
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+  // Add an x-axis label.
+  svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height - 6)
+    .text("Gross Domestic Product (Billions of $USD)");
+// Add a y-axis label.
+  svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("Human Development Index (HDI)");
+// Add the year label; the value is set on transition.
+   var label = svg.append("text")
+    .attr("class", "year label")
+    .attr("text-anchor", "end")
+    .attr("y", height - 24)
+    .attr("x", width)
+    .text(1970);
+    
   
-        var legendRectSize = 18; // Size of legend rectangles
-        var legendSpacing = 10;  // Spacing between legend spaces
+    var legendRectSize = 18; // Size of legend rectangles
+    var legendSpacing = 10;  // Spacing between legend spaces
 
-        var legend = svg.selectAll('.legend') // Select legend property (none yet)
-          .data(interpolateData(1970))  // Grab data
-          .enter()    // enter into data
-          .append('g')    // append onto g element
-          .attr('class', 'legend')     // call the class legend
-          .attr('transform', function(d, i) {    // placement of the legend
-            var height = legendRectSize + legendSpacing;  // height = rectangle size + spaces
-            var offset =  height * BRICS.length / 2 ;  // offset by the #of countries * height /2 (arbitrary)
-            var horz = -2 * legendRectSize + 1000; // x coordinate (arbitrary)
-            var vert = i * height - offset - 500;  // y coordinate (arbitrary)
+    var legend = svg.selectAll('.legend') // Select legend property (none yet)
+        .data(interpolateData(1970))  // Grab data
+        .enter()    // enter into data
+        .append('g')    // append onto g element
+        .attr('class', 'legend')     // call the class legend
+        .attr('transform', function(d, i) {    // placement of the legend
+    var height = legendRectSize + legendSpacing;  // height = rectangle size + spaces
+    var offset =  height * BRICS.length / 2 ;  // offset by the #of countries * height /2 (arbitrary)
+    var horz = -2 * legendRectSize + 1000; // x coordinate (arbitrary)
+    var vert = i * height - offset - 500;  // y coordinate (arbitrary)
             return 'translate(' + horz + ',' + vert + ')'; // translates legend to location
           });                                                     
 
-        legend.append('rect') // Add colored recntangles 
-          .attr('width', legendRectSize) // width of rectangle = size
-          .attr('height', legendRectSize) // height of rectangle = size 
-          .style('fill', function(d) { 
-            return colorScale(color(d)); }); // Set color of rectangle
+    legend.append('rect') // Add colored recntangles 
+        .attr('width', legendRectSize) // width of rectangle = size
+        .attr('height', legendRectSize) // height of rectangle = size 
+        .style('fill', function(d) { return colorScale(color(d)); }); // Set color of rectangle
           
-        legend.append('text')   // add the text to the legend
-          .attr('x', legendRectSize + legendSpacing)  // x coor of text is rectSize + spacing (aligned next to square)
-          .attr('y', legendRectSize - legendSpacing)  // y coor of text is rectSize - spacing (aligned at same height)
-          .text(function(d) { return d.name; });      // text is the name of the country 
+    legend.append('text')   // add the text to the legend
+        .attr('x', legendRectSize + legendSpacing)  // x coor of text is rectSize + spacing (aligned next to square)
+        .attr('y', legendRectSize - legendSpacing)  // y coor of text is rectSize - spacing (aligned at same height)
+        .text(function(d) { return d.name; });      // text is the name of the country 
   
   
   // Add a title and make it display country name on hover.
@@ -272,3 +296,4 @@ d3.csv("BRICS_Household.csv", function(nations) {
   }
 
 });
+}
