@@ -44,38 +44,56 @@ var tooltip = d3.select("body")      //will be adding to 'body'
             .classed("hidden", "true");  //make hidden first
 drawHDI();
 
-/* Add the country label; the value is set on transition.
-var countrylabel = svg.append("text")
-    .attr("class", "country label")
-    .attr("text-anchor", "start")
-    .attr("y", 80)
-    .attr("x", 20)
-    .text(" "); */
-
 function clearCanvas(){
     console.log("I am awesome");
     svg.selectAll("*").remove();
 }
 
+//function to redraw time chart with HDI as y axis
 function drawHDI(){
+    //clear graph
     svg.selectAll("*").remove();
-    loadData("BRICS_Household.csv");
+    //redefine y scale for HDI
+    yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
+    //reload data to redraw graph
+    loadData("BRICS_HDI.csv", "Human Development Index (HDI)", "HDI");
+    //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
 
+//function to redraw time chart with life expectancy as y axis
 function drawLE(){
-    alert("currently in progress");
+    //clear graph
+    svg.selectAll("*").remove();
+    //redefine y scale for life expectancy
+    yScale = d3.scale.linear().domain([40, 90]).range([height, 0]);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([40,50,60,70,80,90]);
+    //reload data and redraw graph
+    loadData("BRICS_LE.csv", "Life Expectancy at Birth (Total)", "Life Expectancy");
+    //move slider to starting position
+    document.getElementById("slider-time").value = "1970";
 }
 
+//function to redraw time chart with education as y axis
 function drawEdu(){
-    alert("Working on this");
+    //clear graph
+    svg.selectAll("*").remove();
+    //redefine y scale for education
+    yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
+    //reload data and redraw graph
+    loadData("BRICS_Edu.csv", "Rate of Education", "Education");
+    //move slider to starting position
+    document.getElementById("slider-time").value = "1970";
 }
 
+//function to draw time chart with GNI as y axis
 function drawGNI(){
     alert("Almost done!");
 }
 
-function loadData(file){
+function loadData(file, yLabel ,yVar){
 // Load the data.
 d3.csv(file, function(nations) {
   // A bisector since many nation's data is sparsely-defined.
@@ -115,7 +133,7 @@ d3.csv(file, function(nations) {
     .attr("y", 6)
     .attr("dy", ".75em")
     .attr("transform", "rotate(-90)")
-    .text("Human Development Index (HDI)");
+    .text(yLabel);
 // Add the year label; the value is set on transition.
    var label = svg.append("text")
     .attr("class", "year label")
@@ -137,7 +155,7 @@ d3.csv(file, function(nations) {
     var height = legendRectSize + legendSpacing;  // height = rectangle size + spaces
     var offset =  height * BRICS.length / 2 ;  // offset by the #of countries * height /2 (arbitrary)
     var horz = -2 * legendRectSize + 1000; // x coordinate (arbitrary)
-    var vert = i * height - offset - 500;  // y coordinate (arbitrary)
+    var vert = i * height - offset - 220;  // y coordinate (arbitrary)
             return 'translate(' + horz + ',' + vert + ')'; // translates legend to location
           });                                                     
 
@@ -189,7 +207,7 @@ d3.csv(file, function(nations) {
                 //using html lets us add line breaks (new line char)
                 tooltip.html("<center>"+ d.name + "</center>" + 
                             "GDP " + "<span style='float:right;'>" + "$" + commaFormat(d.gdp/1000000000) + " Billion </span> <br>" +
-                            "HDI " + "<span style='float:right;'>" + d.hdi + "</span> <br>" +
+                            yVar + "<span style='float:right;'>" + d.hdi + "</span> <br>" +
                             "Total Population " + "<span style='float:right;'>" + commaFormat(d.population/1000000) + " Million </span>")
                        //.transition()
                        //.duration(1000)
