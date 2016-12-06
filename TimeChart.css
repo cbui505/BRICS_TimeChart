@@ -210,9 +210,12 @@ input[type=range]:focus::-ms-fill-upper {
     position: relative;
     left: 700px;
     bottom: 36px;
+    font-size: 14px;
 }
 #projectedLabel1{
     position: relative;
     left: 240px;
     bottom: 20px;
+    font-size: 14px;
+
 }
