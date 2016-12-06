@@ -14,6 +14,7 @@
     compete with, and even overtake the former champion in terms of GDP and HDI.
 </p>
 <div id="chart" style="margin:0px"></div>
+<div id="controls">
 <span id="min-time">1970</span> 
 <input type="range" name="points" min="1970" max="2050" step="1" value="0" id="slider-time" style="width:900px" 
        onchange="updateData(this.value);" oninput = "updateData(this.value);">
@@ -25,12 +26,14 @@
   <div id="projectedLabel1">Historical Data</div>
 
 <div id="projectedLabel2">Projected Data</div>
-<button id="start" onclick="drawHDI();">HDI</button>
-<button id="start" onclick="drawLE();">Life Expectancy</button>
-<button id="start" onclick="drawEdu();">Education</button>
-<button id="start" onclick="drawHouse();">Total Household Consumption</button>
-<button id="stop" onclick="clearCanvas();">Clear</button>    
-    
+  <div id="buttons">
+<button id="start" onclick="drawHDI();" class="btn">HDI</button>
+<button id="start" onclick="drawLE();"class="btn">Life Expectancy</button>
+<button id="start" onclick="drawEdu();"class="btn">Education</button>
+<button id="start" onclick="drawHouse();"class="btn">Total Household Consumption</button>
+<button id="stop" onclick="clearCanvas();"class="btn">Clear</button> 
+  </div>
+</div>
 <h3><br>Created by: Christopher Bui and Janesh Chhabra in collaboration with Suresh K Lodha</h3>
 <h3>CMPS 165: Data Programming for Visualization</h3>
 <h3>Fall 2016</h3>

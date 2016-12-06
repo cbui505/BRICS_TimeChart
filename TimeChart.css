@@ -219,3 +219,27 @@ input[type=range]:focus::-ms-fill-upper {
     font-size: 14px;
 
 }
+#controls{
+    position: relative;
+    left: 30px;
+}
+#buttons{
+    position: relative;
+    left: 300px;
+}
+.btn {
+  -webkit-border-radius: 16;
+  -moz-border-radius: 16;
+  border-radius: 16px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 13px;
+  background: #9e9e9e;
+  padding: 7px 10px 7px 10px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3eacf0;
+  text-decoration: none;
+}

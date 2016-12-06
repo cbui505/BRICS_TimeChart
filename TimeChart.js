@@ -57,7 +57,7 @@ function drawHDI(){
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
     //reload data to redraw graph
-    loadData("BRICS_HDI.csv", "Human Development Index (HDI)", "HDI");
+    loadData("BRICS_HDI.csv", "Human Development Index (HDI)", "HDI", 1,"", "");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
@@ -70,7 +70,7 @@ function drawLE(){
     yScale = d3.scale.linear().domain([40, 90]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([40,50,60,70,80,90]);
     //reload data and redraw graph
-    loadData("BRICS_LE.csv", "Life Expectancy at Birth (Total)", "Life Expectancy");
+    loadData("BRICS_LE.csv", "Life Expectancy at Birth (Total)", "Life Expectancy", 1,"","");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
@@ -83,7 +83,7 @@ function drawEdu(){
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
     //reload data and redraw graph
-    loadData("BRICS_EDU.csv", "Rate of Education", "Education");
+    loadData("BRICS_EDU.csv", "Rate of Education", "Education",1, "","");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
@@ -93,16 +93,16 @@ function drawHouse(){
     //clear graph
     svg.selectAll("*").remove();
     //redefine y scale for education
-    yScale = d3.scale.log().domain([9000000000, 100000000000000]).range([height, 0]);
+    yScale = d3.scale.log().domain([9000000000, 12500000000000]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([1e11, 1e12,1e13,1e14]).tickFormat(function(d){return commaFormat(d/1000000000)});
     //reload data and redraw graph
-    loadData("BRICS_HOUSEHOLD.csv", "Rate of Education", "Education");
+    loadData("BRICS_HOUSEHOLD.csv", "Total Household Consumption (Millions)", "Total Consumption", 1000000000000, "$", " Billion");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
     //alert("Almost done!");
 }
 
-function loadData(file, yLabel ,yVar){
+function loadData(file, yLabel ,yVar, formatNum, unit1, unit2){
 // Load the data.
 d3.csv(file, function(nations) {
   // A bisector since many nation's data is sparsely-defined.
@@ -217,7 +217,7 @@ d3.csv(file, function(nations) {
                 //using html lets us add line breaks (new line char)
                 tooltip.html("<center>"+ d.name + "</center>" + 
                             "GDP " + "<span style='float:right;'>" + "$" + commaFormat(d.gdp/1000000000) + " Billion </span> <br>" +
-                            yVar + "<span style='float:right;'>" + d.hdi + "</span> <br>" +
+                            yVar + "<span style='float:right;'>" + unit1+commaFormat(d.hdi/formatNum) + unit2 +"</span> <br>" +
                             "Total Population " + "<span style='float:right;'>" + commaFormat(d.population/1000000) + " Million </span>")
                        //.transition()
                        //.duration(1000)
