@@ -45,8 +45,7 @@ var tooltip = d3.select("body")      //will be adding to 'body'
 drawHDI();
 
 function clearCanvas(){
-    console.log("I am awesome");
-    svg.selectAll("*").remove();
+    document.getElementById("slider-time").value = "1970";
 }
 
 //function to redraw time chart with HDI as y axis
@@ -96,7 +95,7 @@ function drawHouse(){
     yScale = d3.scale.log().domain([9000000000, 12500000000000]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([1e11, 1e12,1e13,1e14]).tickFormat(function(d){return commaFormat(d/1000000000)});
     //reload data and redraw graph
-    loadData("BRICS_HOUSEHOLD.csv", "Total Household Consumption (Millions)", "Total Consumption", 1000000000000, "$", " Billion");
+    loadData("BRICS_HOUSEHOLD.csv", "Total Household Consumption (Billions of $USD)", "Consumption", 1000000000000, "$", " Billion");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
     //alert("Almost done!");
