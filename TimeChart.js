@@ -89,8 +89,17 @@ function drawEdu(){
 }
 
 //function to draw time chart with GNI as y axis
-function drawGNI(){
-    alert("Almost done!");
+function drawHouse(){
+    //clear graph
+    svg.selectAll("*").remove();
+    //redefine y scale for education
+    yScale = d3.scale.log().domain([9000000000, 100000000000000]).range([height, 0]);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([1e11, 1e12,1e13,1e14]).tickFormat(function(d){return commaFormat(d/1000000000)});
+    //reload data and redraw graph
+    loadData("BRICS_HOUSEHOLD.csv", "Rate of Education", "Education");
+    //move slider to starting position
+    document.getElementById("slider-time").value = "1970";
+    //alert("Almost done!");
 }
 
 function loadData(file, yLabel ,yVar){
@@ -108,6 +117,7 @@ d3.csv(file, function(nations) {
       .attr("data-legend",function(d) { return d.name})
       .style("fill", function(d) { 
           return colorScale(color(d)); })
+      .style("opacity", 0.5)
       .call(position);
   
   // Add the x-axis.
