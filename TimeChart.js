@@ -61,6 +61,8 @@ function make_y_axis() {
       range = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
   else if(small==1)
       range = [40,50,60,70,80,90];
+  else if(small==2) 
+      range = [20,30,40,50,60,70,80,90,100];
   else
       range = [1e11, 1e12,1e13,1e14];
   return d3.svg.axis()
@@ -103,12 +105,12 @@ function drawLE(){
 function drawEdu(){
     //clear graph
     svg.selectAll("*").remove();
-    small = 0;
+    small = 2;
     //redefine y scale for education
-    yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
-    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
+    yScale = d3.scale.linear().domain([20, 110]).range([height, 0]);
+    yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([20,30,40,50,60,70,80,90,100]);
     //reload data and redraw graph
-    loadData("BRICS_EDU.csv", "Rate of Education", "Education",1, "","");
+    loadData("BRICS_EDU.csv", "% of Population receiving Education", "Education",1, "","");
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
@@ -117,7 +119,7 @@ function drawEdu(){
 function drawHouse(){
     //clear graph
     svg.selectAll("*").remove();
-    small = 2;
+    small = 3;
     //redefine y scale for education
     yScale = d3.scale.log().domain([9000000000, 12500000000000]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([1e11, 1e12,1e13,1e14]).tickFormat(function(d){return commaFormat(d/1000000000)});
@@ -346,7 +348,7 @@ d3.csv(file, function(nations) {
               index = i; // set the index
           }
       }
-      return +nations[index][year]; // return the HDI for the country and year
+      return Math.round(+nations[index][year] *100) /100; // return the HDI for the country and year
   }
   // retrieves GDP for a country and year
   function getGDP(year, country){
