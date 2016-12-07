@@ -254,11 +254,10 @@ input[type=range]:focus::-ms-fill-upper {
     left: 220px;
 }
 #HDIcomp{
-    background-color: #9e9e9e;
-    position: relative;
-    float:right;
-    top: 150px;
-    right: 132px;
+    background-color: #C0C5CE;
+    position: absolute;
+    top: 290px;
+    right: 0px;
     width: 220px;
     text-align: center;
     font-size: 14px;
