@@ -21,8 +21,9 @@ text {
   font-size: 10px;
 }
 
+/* stying the table */
 #credits{
-    background-color: #b6fbff;
+    background-color: #C0C5CE;
     width: 1000px;
     position: relative;
     left: 25px;
@@ -47,11 +48,13 @@ th, td{
     width: 500px;
 }
 
+/* style outline of country circles */
 .dot {
   stroke: #000;
   stroke-opacity: 0.33;
 }
 
+/* style axes */
 .axis path, .axis line {
   fill: none;
   stroke: #000;
@@ -203,6 +206,7 @@ input[type=range]:focus::-ms-fill-upper {
   background: #C2BFB6;
 }
 
+/* style projection indicators*/
 #projected{
     background-color: #b6fbff;
     height: 8px;
@@ -228,17 +232,14 @@ input[type=range]:focus::-ms-fill-upper {
     font-size: 14px;
 
 }
-#HDIcomp{
-    background-color: dimgrey;
-    position: relative;
-    text-align: center;
-    float: right;
-    font-size: 14px;
-}
+
+/* style div buttons  */
 #controls{
     position: relative;
     left: 30px;
 }
+
+/* style buttons */
 #buttons{
     position: relative;
     left: 340px;
@@ -252,6 +253,18 @@ input[type=range]:focus::-ms-fill-upper {
     position: relative;
     left: 220px;
 }
+#HDIcomp{
+    background-color: #9e9e9e;
+    position: relative;
+    float:right;
+    top: 150px;
+    right: 132px;
+    width: 220px;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+}
+
 .btn {
   -webkit-border-radius: 16;
   -moz-border-radius: 16;
