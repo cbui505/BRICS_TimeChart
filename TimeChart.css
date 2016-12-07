@@ -21,8 +21,11 @@ text {
   font-size: 10px;
 }
 
-table{
+#credits{
     background-color: #b6fbff;
+    width: 1000px;
+    position: relative;
+    left: 25px;
 }
 
 th, td{
@@ -30,12 +33,18 @@ th, td{
 }
 
 #header{
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 16px;
 }
 
 .lastcolumn{
-    width: 200px;
+    width: 250px;
+}
+
+.firstcolumn{
+    width: 250px;
+}
+.secondcolumn{
+    width: 500px;
 }
 
 .dot {
