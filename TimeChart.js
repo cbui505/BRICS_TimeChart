@@ -42,12 +42,40 @@ var tooltip = d3.select("body")      //will be adding to 'body'
             .append("div")	  //for formatting
             .attr("id", "tooltip")  //for styling
             .classed("hidden", "true");  //make hidden first
+
+// make grid lines for x axis
+function make_x_axis() {
+    return d3.svg.axis()
+        .scale(xScale)
+        .orient("bottom")   //same as x axis
+        .tickValues([1e11, 1e12,1e13,1e14])        //add ticks to be grids
+}
+
+var small = 0;
+
+// make grid lines for y axis
+function make_y_axis() {
+  var range = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
+  console.log(small);
+  if(small==0)
+      range = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0];
+  else if(small==1)
+      range = [40,50,60,70,80,90];
+  else
+      range = [1e11, 1e12,1e13,1e14];
+  return d3.svg.axis()
+      .scale(yScale)
+      .orient("left")   //same as regular axis
+      .tickValues(range);       //add ticks to be grid
+}
+
 drawHDI();
 
 //function to redraw time chart with HDI as y axis
 function drawHDI(){
     //clear graph
     svg.selectAll("*").remove();
+    small = 0;
     //redefine y scale for HDI
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
@@ -61,6 +89,7 @@ function drawHDI(){
 function drawLE(){
     //clear graph
     svg.selectAll("*").remove();
+    small = 1;
     //redefine y scale for life expectancy
     yScale = d3.scale.linear().domain([40, 90]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([40,50,60,70,80,90]);
@@ -74,6 +103,7 @@ function drawLE(){
 function drawEdu(){
     //clear graph
     svg.selectAll("*").remove();
+    small = 0;
     //redefine y scale for education
     yScale = d3.scale.linear().domain([0.2, 1.1]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]);
@@ -87,6 +117,7 @@ function drawEdu(){
 function drawHouse(){
     //clear graph
     svg.selectAll("*").remove();
+    small = 2;
     //redefine y scale for education
     yScale = d3.scale.log().domain([9000000000, 12500000000000]).range([height, 0]);
     yAxis = d3.svg.axis().scale(yScale).orient("left").tickValues([1e11, 1e12,1e13,1e14]).tickFormat(function(d){return commaFormat(d/1000000000)});
@@ -147,6 +178,34 @@ d3.csv(file, function(nations) {
     .attr("x", width)
     .text(1970);
     
+    
+     //adding the gridlines going from x axis
+  svg.append("g")
+      //give it grid class to add css styles
+      .attr("class", "grid")
+      //bring it down to where x axis is
+      .attr("transform", "translate(0," + height + ")")
+      //make the gridlines for x axis as above
+      .call(make_x_axis()
+             //set ticksize of major to height of chart
+             //minor ticks and end ticks get height of 0
+             .tickSize(-height, 0, 0)
+             //get rid of dupicate tick label, have them from axis
+             .tickFormat("")
+           );
+      
+  //adding the gridlines going from y axis
+  svg.append("g")
+      //for css styles
+      .attr("class", "grid")
+      //make gridlines for y axis as above
+      .call(make_y_axis()
+             //set ticksize of major to width of chart
+             //minor ticks and end ticks get width of 0
+             .tickSize(-width, 0, 0)
+             //get rid of dupicate tick label, have them from axis
+             .tickFormat("")
+            );
   
     var legendRectSize = 18; // Size of legend rectangles
     var legendSpacing = 10;  // Spacing between legend spaces

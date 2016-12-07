@@ -249,3 +249,10 @@ input[type=range]:focus::-ms-fill-upper {
   background: #3eacf0;
   text-decoration: none;
 }
+
+/* set properties of gridlines */
+.grid .tick {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
