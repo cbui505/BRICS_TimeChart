@@ -269,7 +269,7 @@ d3.csv(file, function(nations) {
             
                 //adding the text for the tooltip
                 //using html lets us add line breaks (new line char)
-                tooltip.html("<center>"+ d.name + "</center>" + 
+                tooltip.html("<b><center>"+ d.name + "</center> </b>" + 
                             "GDP " + "<span style='float:right;'>" + "$" + commaFormat(d.gdp/1000000000) + " Billion </span> <br>" +
                             yVar + "<span style='float:right;'>" + unit1+commaFormat(d.hdi/formatNum) + unit2 +"</span> <br>" +
                             "Total Population " + "<span style='float:right;'>" + commaFormat(d.population/1000000) + " Million </span>")
