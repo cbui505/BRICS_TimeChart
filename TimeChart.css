@@ -232,6 +232,10 @@ input[type=range]:focus::-ms-fill-upper {
     position: relative;
     left: -90px;
 }
+#titles{
+    position: relative;
+    left: 220px;
+}
 .btn {
   -webkit-border-radius: 16;
   -moz-border-radius: 16;
