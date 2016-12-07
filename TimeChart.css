@@ -242,7 +242,7 @@ input[type=range]:focus::-ms-fill-upper {
 /* style buttons */
 #buttons{
     position: relative;
-    left: 340px;
+    left: 400px;
 }
 #descriptionText{
   text-align: center;
@@ -254,14 +254,12 @@ input[type=range]:focus::-ms-fill-upper {
     left: 220px;
 }
 #HDIcomp{
-    background-color: #C0C5CE;
+    background-color: #9e9e9e;
     position: absolute;
-    top: 290px;
-    right: 0px;
-    width: 220px;
-    text-align: center;
+    margin: 200px 0 0 1003px;
     font-size: 14px;
     color: #ffffff;
+    width: 230px;
 }
 
 .btn {

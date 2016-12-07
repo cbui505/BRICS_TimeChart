@@ -114,7 +114,7 @@ function drawEdu(){
     //move slider to starting position
     document.getElementById("slider-time").value = "1970";
 }
-
+/*
 //function to draw time chart with GNI as y axis
 function drawHouse(){
     //clear graph
@@ -129,7 +129,7 @@ function drawHouse(){
     document.getElementById("slider-time").value = "1970";
     //alert("Almost done!");
 }
-
+*/
 function loadData(file, yLabel ,yVar, formatNum, unit1, unit2){
 // Load the data.
 d3.csv(file, function(nations) {
@@ -235,7 +235,15 @@ d3.csv(file, function(nations) {
         .attr('y', legendRectSize - legendSpacing)  // y coor of text is rectSize - spacing (aligned at same height)
         .text(function(d) { return d.name; });      // text is the name of the country 
   
-  
+    var description = svg.selectAll('.description')
+        .append('g')
+        .attr('class', 'description')
+        .attr('transform', 'translate(' + 90 + ',' + 250 + ')' );
+    description.append('rect')
+        .attr('width', 250)
+        .attr('height', 170)
+        .style('fill', 'red');
+
   // Add a title and make it display country name on hover.
  /* dot.append("title")
       .text(function(d) { return d.name; }); */
