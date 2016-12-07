@@ -225,11 +225,17 @@ input[type=range]:focus::-ms-fill-upper {
 }
 #buttons{
     position: relative;
-    left: 300px;
+    left: 340px;
+}
+#descriptionText{
+  text-align: center;
+    position: relative;
+    left: -90px;
 }
 .btn {
   -webkit-border-radius: 16;
   -moz-border-radius: 16;
+  border:0px;
   border-radius: 16px;
   font-family: Arial;
   color: #ffffff;
