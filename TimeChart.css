@@ -228,6 +228,13 @@ input[type=range]:focus::-ms-fill-upper {
     font-size: 14px;
 
 }
+#HDIcomp{
+    background-color: dimgrey;
+    position: relative;
+    text-align: center;
+    float: right;
+    font-size: 14px;
+}
 #controls{
     position: relative;
     left: 30px;
